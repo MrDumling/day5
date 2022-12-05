@@ -23,6 +23,7 @@ impl MoveInstruction {
             .drain(..self.moved_amount)
             .rev()
             .collect::<Vec<char>>();
+
         pushed_values.append(&mut crate_stacks.stacks[self.to_stack].contents);
 
         crate_stacks.stacks[self.to_stack] = Stack {
@@ -36,6 +37,7 @@ impl MoveInstruction {
             .contents
             .drain(..self.moved_amount)
             .collect::<Vec<char>>();
+
         pushed_values.append(&mut crate_stacks.stacks[self.to_stack].contents);
 
         crate_stacks.stacks[self.to_stack] = Stack {
@@ -79,12 +81,13 @@ fn parse_input(path: &str) -> (CrateStacks, Vec<MoveInstruction>) {
 
     let mut provided_crate_lines = Vec::new();
     while let Some(Ok(current_line)) = line_iter.next() {
-        if current_line.is_empty() { // match lines up until an empty line occurs, which indicates the start of the move instructions
+        if current_line.is_empty() {
+            // match lines up until an empty line occurs, which indicates the start of the move instructions
             break;
         }
         provided_crate_lines.push(current_line);
     }
-    provided_crate_lines.pop(); // remove the line containing crate stack ID's
+    provided_crate_lines.pop(); // remove the line containing crate stack index's
 
     (
         get_crate_stacks(provided_crate_lines),
@@ -98,7 +101,7 @@ fn parse_input(path: &str) -> (CrateStacks, Vec<MoveInstruction>) {
 
 fn get_line_values(mut string: String) -> Vec<Option<char>> {
     let mut result = Vec::new();
-    
+
     while !string.is_empty() {
         result.push(if let [b'[', x, b']'] = string[..3].as_bytes() {
             Some(*x as char)
@@ -121,7 +124,7 @@ fn pop_front_stack(crate_contents: &mut Vec<Vec<Option<char>>>) -> Stack {
 
     for current_section in crate_contents.iter_mut() {
         if let Some(x) = current_section.remove(0) {
-            stack_contents.push(x);   
+            stack_contents.push(x);
         }
     }
 
@@ -138,7 +141,10 @@ fn pop_front_stack(crate_contents: &mut Vec<Vec<Option<char>>>) -> Stack {
 fn get_crate_stacks(mut crate_contents: Vec<String>) -> CrateStacks {
     let mut stacks = Vec::new();
 
-    let mut crate_contents: Vec<Vec<Option<char>>> = crate_contents.into_iter().map(|x| get_line_values(x)).collect();
+    let mut crate_contents: Vec<Vec<Option<char>>> = crate_contents
+        .into_iter()
+        .map(|x| get_line_values(x))
+        .collect();
 
     while !crate_contents[0].is_empty() {
         stacks.push(pop_front_stack(&mut crate_contents));
