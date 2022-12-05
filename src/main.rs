@@ -98,9 +98,9 @@ fn parse_input(path: &str) -> (CrateStacks, Vec<MoveInstruction>) {
 
 /* Very iffy about the parsing in this function
 Input is mutated:
-    [D]         [D]
-[N] [C]      -> [C]
-[Z] [M] [P]     [M] [P]
+"    [D]    "     "[D]    "
+"[N] [C]    "  -> "[C]    "
+"[Z] [M] [P]"     "[M] [P]"
 */
 fn pop_front_stack(crate_contents: &mut [String]) -> Stack {
     let mut stack_contents = Vec::new();
@@ -118,16 +118,16 @@ fn pop_front_stack(crate_contents: &mut [String]) -> Stack {
             }
         }
     }
-    
+
     Stack {
         contents: stack_contents,
     }
 }
 
 /* Expects inputs formatted similar to:
-    [D]
-[N] [C]
-[Z] [M] [P]
+"    [D]    "
+"[N] [C]    "
+"[Z] [M] [P]"
 */
 fn get_crate_stacks(mut crate_contents: Vec<String>) -> CrateStacks {
     let mut stacks = Vec::new();
