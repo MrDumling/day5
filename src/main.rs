@@ -119,7 +119,7 @@ fn get_line_values(mut string: String) -> Vec<Option<char>> {
     result
 }
 
-fn pop_front_stack(crate_contents: &mut Vec<Vec<Option<char>>>) -> Stack {
+fn pop_front_stack(crate_contents: &mut [Vec<Option<char>>]) -> Stack {
     let mut stack_contents = Vec::new();
 
     for current_section in crate_contents.iter_mut() {
@@ -138,12 +138,12 @@ fn pop_front_stack(crate_contents: &mut Vec<Vec<Option<char>>>) -> Stack {
 "[N] [C]    "
 "[Z] [M] [P]"
 */
-fn get_crate_stacks(mut crate_contents: Vec<String>) -> CrateStacks {
+fn get_crate_stacks(crate_contents: Vec<String>) -> CrateStacks {
     let mut stacks = Vec::new();
 
     let mut crate_contents: Vec<Vec<Option<char>>> = crate_contents
         .into_iter()
-        .map(|x| get_line_values(x))
+        .map(get_line_values)
         .collect();
 
     while !crate_contents[0].is_empty() {
